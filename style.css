@@ -73,7 +73,8 @@ section { padding: 80px 0; border-bottom: 1px solid #2a2a2a; }
 /* --- BENEFÍCIOS --- */
 .benefits-section { background-color: var(--surface-color); }
 .benefits-carousel-wrapper { position: relative; }
-.benefits-scroller { display: flex; gap: 30px; overflow-x: hidden; padding: 10px; scroll-behavior: smooth; }
+.benefits-scroller { display: flex; gap: 30px; overflow-x: auto; padding: 10px; scroll-behavior: smooth; /* Oculta a barra de rolagem visualmente */ -ms-overflow-style: none; /* IE and Edge */ scrollbar-width: none; /* Firefox */ }
+.benefits-scroller::-webkit-scrollbar { display: none; /* Safari and Chrome */ }
 .benefit-card { background-color: var(--background-color); padding: 30px; border: 1px solid #2a2a2a; border-radius: 12px; text-align: center; transition: transform 0.3s ease, border-color 0.3s ease; flex: 0 0 280px; }
 .benefit-card:hover { transform: translateY(-5px); border-color: var(--secondary-color); }
 .benefit-card .icon { display: block; margin-bottom: 15px; width: 48px; height: 48px; margin-left: auto; margin-right: auto;}
@@ -187,7 +188,22 @@ section { padding: 80px 0; border-bottom: 1px solid #2a2a2a; }
 .faq-item summary::after { content: '+'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 1.5rem; color: var(--secondary-color); transition: transform 0.3s ease; }
 .faq-item[open] summary { color: var(--secondary-color); }
 .faq-item[open] summary::after { transform: translateY(-50%) rotate(45deg); }
-.faq-item p { padding: 0 20px 20px 20px; color: var(--muted-text-color); }
+
+/* Animação do FAQ */
+.faq-item p {
+    color: var(--muted-text-color);
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease-out, opacity 0.3s ease-in, padding 0.4s ease-out;
+}
+.faq-item[open] > p {
+    max-height: 300px; /* Altura suficiente para o conteúdo */
+    opacity: 1;
+    padding: 0 20px 20px 20px;
+    transition: max-height 0.5s ease-in, opacity 0.4s ease-in 0.1s, padding 0.5s ease-in;
+}
 
 /* --- QUIZ SECTION --- */
 #quiz-section { background-color: var(--surface-color); }
@@ -264,8 +280,24 @@ section { padding: 80px 0; border-bottom: 1px solid #2a2a2a; }
     .nav.active .hamburger span:nth-child(2) { opacity: 0; }
     .nav.active .hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
     
-    .benefits-nav { display: none; }
-    .benefits-scroller { overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 20px; }
+    /* --- Alteração aqui --- */
+    .benefits-scroller { 
+        scroll-snap-type: x mandatory; 
+        padding-bottom: 20px; 
+    }
+    .benefits-nav {
+        /* Ajusta o tamanho e posição para telas menores */
+        width: 40px;
+        height: 40px;
+    }
+    .benefits-nav.prev {
+        left: 5px; /* Reposiciona para dentro da tela */
+    }
+    .benefits-nav.next {
+        right: 5px; /* Reposiciona para dentro da tela */
+    }
+    /* Fim da alteração */
+
     .process-container { grid-template-columns: 1fr; gap: 30px; }
     .process-visual { max-width: 250px; margin: 0 auto; }
     
@@ -279,4 +311,4 @@ section { padding: 80px 0; border-bottom: 1px solid #2a2a2a; }
 
     .plans-container { grid-template-columns: 1fr; }
     .plan-card.featured { transform: scale(1.02); }
-}
+}```
